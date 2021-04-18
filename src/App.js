@@ -1,24 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Home from './component/Home/Home';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import Login from './component/LoginForm/Login';
+import CreateAccount from './component/CreateAccount/CreateAccount';
+import { createContext, useState } from 'react';
+import PrivetRoute from './component/PrivetRoute/PrivetRoute';
+import ServiceDetail from './component/ServiceDetail/ServiceDetail';
+import Admin from './component/Admin/Admin';
+
+export const UserContext = createContext() 
+
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState({})
+  console.log(loggedInUser)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
+      <Router>
+        <Switch>
+          <Route exact path='/'>
+              <Home />
+          </Route>
+          <Route path='/home'>
+              <Home />
+          </Route>
+          <Route path='/login'>
+              <Login/>
+          </Route>
+          <Route path='/createAccount'>
+              <CreateAccount/>
+          </Route>
+          <PrivetRoute path="/serviceDetail">
+              <ServiceDetail />
+          </PrivetRoute>
+          <PrivetRoute path='/admin'>
+              <Admin />
+          </PrivetRoute>
+        </Switch>
+      </Router>
+    </UserContext.Provider>
   );
 }
 
